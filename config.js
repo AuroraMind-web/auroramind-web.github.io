@@ -1,0 +1,5 @@
+const config = {
+  HUGGINGFACE_API_KEY: process.env.HUGGINGFACE_API_KEY,
+};
+
+export default config;
