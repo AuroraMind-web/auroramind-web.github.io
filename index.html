@@ -3,134 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AuroraMind Chat IA</title>
+  <title>AuroraMind</title>
   <style>
     body {
-      background-color: #0b0b0b;
-      color: #f2f2f2;
+      margin: 0;
+      padding: 0;
       font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at center, #0b0f19, #000);
+      color: white;
+      text-align: center;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      height: 100vh;
-      margin: 0;
+      align-items: center;
+    }
+
+    .logo {
+      width: 200px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 40px gold;
+      margin-bottom: 20px;
     }
 
     h1 {
-      color: #00ffe0;
-      font-size: 2rem;
-      margin-bottom: 10px;
-      text-shadow: 0 0 15px #00ffe0;
-    }
-
-    p {
-      color: #cfcfcf;
-      font-size: 1rem;
-      margin-bottom: 20px;
-      text-align: center;
-      max-width: 600px;
-    }
-
-    .chat-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      width: 90%;
-      max-width: 500px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(0, 255, 200, 0.3);
-    }
-
-    .message {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px 15px;
-      border-radius: 10px;
-      margin: 10px 0;
-    }
-
-    .user {
-      text-align: right;
-      color: #00ffe0;
-    }
-
-    .bot {
-      text-align: left;
+      font-size: 1.6rem;
+      margin-bottom: 15px;
       color: #ffffff;
     }
 
-    input[type="text"] {
-      width: 70%;
-      padding: 10px;
-      border: none;
-      border-radius: 10px;
-      outline: none;
-      background-color: #1a1a1a;
-      color: #fff;
-      margin-right: 10px;
+    p {
+      color: #cccccc;
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin: 0 auto 30px;
+      line-height: 1.6;
     }
 
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(90deg, #00ffe0, #0075ff);
-      color: #0b0b0b;
-      font-weight: bold;
+    .btn {
+      background: none;
+      border: 2px solid #00aaff;
+      color: #00aaff;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s;
     }
 
-    button:hover {
-      opacity: 0.8;
+    .btn:hover {
+      background: #00aaff;
+      color: #000;
+      box-shadow: 0 0 15px #00aaff;
     }
 
     footer {
-      margin-top: 30px;
-      color: #555;
-      font-size: 0.8rem;
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
     }
   </style>
 </head>
 <body>
-  <h1>🤖 AuroraMind Chat IA</h1>
-  <p>Em breve, aqui estará o chat inteligente da AuroraMind — uma conversa com a tua IA personalizada.</p>
+  <img src="logo.png" alt="AuroraMind Logo" class="logo" />
 
-  <div class="chat-box">
-    <div id="chat-messages"></div>
+  <h1>AuroraMind</h1>
+  <p>AuroraMind: A nova geração de inteligência digital para negócios e criadores.</p>
 
-    <div style="margin-top: 10px;">
-      <input type="text" id="userInput" placeholder="Escreve tua mensagem..." />
-      <button onclick="sendMessage()">Enviar</button>
-    </div>
-  </div>
+  <a href="chat.html">
+    <button class="btn">Explorar IA</button>
+  </a>
 
-  <footer>© 2025 AuroraMind – Inteligência que evolui contigo 🌌</footer>
-
-  <script>
-    const chatMessages = document.getElementById("chat-messages");
-
-    function sendMessage() {
-      const input = document.getElementById("userInput");
-      const userText = input.value.trim();
-      if (!userText) return;
-
-      // Mensagem do usuário
-      const userMsg = document.createElement("div");
-      userMsg.className = "message user";
-      userMsg.textContent = userText;
-      chatMessages.appendChild(userMsg);
-
-      // Resposta automática (placeholder)
-      const botMsg = document.createElement("div");
-      botMsg.className = "message bot";
-      botMsg.textContent = "🤖 A AuroraMind está em desenvolvimento — em breve poderás conversar com a IA real!";
-      chatMessages.appendChild(botMsg);
-
-      // Limpar campo e rolar pro fim
-      input.value = "";
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-  </script>
+  <footer>© 2025 AuroraMind | Feito com ❤️ e tecnologia</footer>
 </body>
 </html>
