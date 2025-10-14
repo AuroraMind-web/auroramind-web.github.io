@@ -1,4 +1,3 @@
-
 async function sendMessageToAuroraMind(message) {
   const chatBox = document.getElementById("chatBox");
 
