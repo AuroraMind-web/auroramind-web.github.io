@@ -3,11 +3,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Método não permitido" });
   }
 
-  try {
-    const { message } = await req.json();
+  const { message } = req.body;
 
-    // Conecta à API de IA (OpenAI ou HuggingFace)
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+  try {
+    const reply = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,19 +14,16 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        messages: [
-          { role: "system", content: "Você é AuroraMind, uma IA futurista e amigável que ajuda os visitantes com ideias, tecnologia e criatividade." },
-          { role: "user", content: message }
-        ]
+        messages: [{ role: "user", content: message }]
       })
     });
 
-    const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "Desculpa, não consegui responder agora.";
+    const data = await reply.json();
 
-    return res.status(200).json({ reply });
+    res.status(200).json({
+      answer: data.choices?.[0]?.message?.content || "Desculpa, não consegui responder agora 😅"
+    });
   } catch (error) {
-    console.error("Erro:", error);
-    return res.status(500).json({ error: "Erro interno no servidor." });
+    res.status(500).json({ error: "Erro ao conectar com a IA." });
   }
 }
