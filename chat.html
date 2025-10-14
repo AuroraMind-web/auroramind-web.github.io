@@ -14,6 +14,7 @@
       height: 100vh;
       margin: 0;
     }
+
     header {
       background: #111122;
       padding: 10px 20px;
@@ -21,15 +22,19 @@
       font-size: 1.3em;
       border-bottom: 1px solid #333;
     }
+
     #chat-box {
       flex: 1;
       padding: 15px;
       overflow-y: auto;
+      scroll-behavior: smooth;
     }
+
     #user-input {
       display: flex;
       border-top: 1px solid #333;
     }
+
     #user-input input {
       flex: 1;
       padding: 10px;
@@ -38,6 +43,7 @@
       background: #1a1a22;
       color: #fff;
     }
+
     #user-input button {
       background: #0078ff;
       border: none;
@@ -45,15 +51,20 @@
       padding: 10px 20px;
       cursor: pointer;
     }
+
     #user-input button:hover {
       background: #005fd1;
     }
+
     .msg {
       margin: 8px 0;
+      line-height: 1.4;
     }
+
     .user {
       color: #61dafb;
     }
+
     .bot {
       color: #90ee90;
     }
@@ -61,7 +72,9 @@
 </head>
 <body>
   <header>💬 AuroraMind – Chat IA</header>
+
   <div id="chat-box"></div>
+
   <div id="user-input">
     <input type="text" id="message" placeholder="Escreva sua mensagem..." />
     <button onclick="sendMessage()">Enviar</button>
@@ -76,6 +89,7 @@
 
       chatBox.innerHTML += `<div class='msg user'><b>Você:</b> ${message}</div>`;
       input.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
 
       try {
         const response = await fetch("/api/chat", {
@@ -85,10 +99,11 @@
         });
 
         const data = await response.json();
-        const reply = data.answer || "Desculpa, não consegui responder agora 😅";
+
+        const reply = data?.answer || "Desculpa, não consegui responder agora 😅";
         chatBox.innerHTML += `<div class='msg bot'><b>AuroraMind:</b> ${reply}</div>`;
       } catch (err) {
-        console.error(err);
+        console.error("Erro:", err);
         chatBox.innerHTML += `<div class='msg bot'><b>AuroraMind:</b> Erro ao conectar 😢</div>`;
       }
 
