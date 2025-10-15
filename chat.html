@@ -98,9 +98,11 @@
           body: JSON.stringify({ message })
         });
 
-        const data = await response.json();
+        if (!response.ok) throw new Error("Erro na resposta do servidor");
 
-        const reply = data?.answer || "Desculpa, não consegui responder agora 😅";
+        const data = await response.json();
+        const reply = data.answer || "Desculpa, não consegui responder agora 😅";
+
         chatBox.innerHTML += `<div class='msg bot'><b>AuroraMind:</b> ${reply}</div>`;
       } catch (err) {
         console.error("Erro:", err);
