@@ -92,15 +92,15 @@
       chatBox.scrollTop = chatBox.scrollHeight;
 
       try {
-        const response = await fetch("/api/chat", {
+        const response = await fetch("https://auroramind.vercel.app/api/chat", { 
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message })
         });
 
         const data = await response.json();
-
         const reply = data?.answer || "Desculpa, não consegui responder agora 😅";
+
         chatBox.innerHTML += `<div class='msg bot'><b>AuroraMind:</b> ${reply}</div>`;
       } catch (err) {
         console.error("Erro:", err);
