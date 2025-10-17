@@ -14,6 +14,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      margin: 0;
     }
     #chat {
       width: 90%;
@@ -45,21 +46,21 @@
       margin-bottom: 10px;
       width: 100%;
     }
+    h1 {
+      color: #66fcf1;
+    }
   </style>
 </head>
 <body>
   <h1>💬 AuroraMind</h1>
-
-  <!-- Menu para escolher o provedor -->
   <select id="provider">
     <option value="openai">ChatGPT (OpenAI)</option>
-    <option value="gemini">Gemini (Google)</option>
     <option value="claude">Claude (Anthropic)</option>
+    <option value="gemini">Gemini (Google)</option>
     <option value="deepseek">DeepSeek</option>
-    <option value="suno">Suno</option>
-    <option value="grok">Grok</option>
-    <option value="copilot">Copilot</option>
-    <option value="studioai">Studio AI</option>
+    <option value="grok">Grok (xAI)</option>
+    <option value="suno">Suno AI</option>
+    <option value="studio">Studio AI</option>
   </select>
 
   <div id="chat"></div>
@@ -82,7 +83,6 @@
       messageInput.value = "";
 
       chat.innerHTML += `<p><i>AuroraMind (${provider}) está pensando...</i></p>`;
-      chat.scrollTop = chat.scrollHeight;
 
       try {
         const res = await fetch("/api/chat", {
@@ -95,8 +95,7 @@
 
         chat.innerHTML += `<p><b>${provider}:</b> ${data.answer || "Erro ao responder 😢"}</p>`;
       } catch (err) {
-        chat.innerHTML += `<p><b>${provider}:</b> Erro de conexão 😢</p>`;
-        console.error("Erro:", err);
+        chat.innerHTML += `<p style="color:red;">Erro de conexão com o servidor.</p>`;
       }
 
       chat.scrollTop = chat.scrollHeight;
