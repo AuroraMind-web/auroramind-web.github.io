@@ -1,1 +1,32 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuroraMind – Chat IA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>💬 AuroraMind</h1>
+    <select id="provider">
+      <option value="openai">ChatGPT (OpenAI)</option>
+      <option value="claude">Claude (Anthropic)</option>
+      <option value="gemini">Gemini (Google)</option>
+      <option value="deepseek">DeepSeek</option>
+      <option value="suno">Suno</option>
+      <option value="grok">Grok</option>
+    </select>
+  </header>
+
+  <main id="chat"></main>
+
+  <footer>
+    <input id="message" placeholder="Digite sua mensagem..." />
+    <button id="sendBtn">Enviar</button>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
