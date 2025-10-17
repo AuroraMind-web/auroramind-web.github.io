@@ -1,115 +1,91 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AuroraMind Chat</title>
+  <title>AuroraMind – Chat IA</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #0a0a0f;
-      color: #e0e0e0;
+      background: #0b0c10;
+      color: #fff;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       height: 100vh;
-      margin: 0;
     }
-
-    header {
-      background: #111122;
-      padding: 10px 20px;
-      text-align: center;
-      font-size: 1.3em;
-      border-bottom: 1px solid #333;
-    }
-
-    #chat-box {
-      flex: 1;
-      padding: 15px;
+    #chat {
+      width: 90%;
+      max-width: 500px;
+      background: #1f2833;
+      border-radius: 12px;
+      padding: 20px;
       overflow-y: auto;
-      scroll-behavior: smooth;
+      height: 60vh;
+      margin-bottom: 10px;
     }
-
-    #user-input {
-      display: flex;
-      border-top: 1px solid #333;
-    }
-
-    #user-input input {
-      flex: 1;
+    select, input, button {
+      border: none;
+      border-radius: 8px;
       padding: 10px;
-      border: none;
-      outline: none;
-      background: #1a1a22;
-      color: #fff;
+      font-size: 1em;
     }
-
-    #user-input button {
-      background: #0078ff;
-      border: none;
-      color: white;
-      padding: 10px 20px;
+    input {
+      width: 60%;
+      margin-right: 5px;
+    }
+    button {
+      background: #66fcf1;
+      color: #000;
+      font-weight: bold;
       cursor: pointer;
     }
-
-    #user-input button:hover {
-      background: #005fd1;
-    }
-
-    .msg {
-      margin: 8px 0;
-      line-height: 1.4;
-    }
-
-    .user {
-      color: #61dafb;
-    }
-
-    .bot {
-      color: #90ee90;
+    select {
+      margin-bottom: 10px;
+      width: 100%;
     }
   </style>
 </head>
 <body>
-  <header>💬 AuroraMind – Chat IA</header>
+  <h1>💬 AuroraMind</h1>
+  <select id="provider">
+    <option value="openai">ChatGPT (OpenAI)</option>
+    <option value="gemini">Gemini (Google)</option>
+    <option value="claude">Claude (Anthropic)</option>
+    <option value="deepseek">DeepSeek</option>
+  </select>
 
-  <div id="chat-box"></div>
+  <div id="chat"></div>
 
-  <div id="user-input">
-    <input type="text" id="message" placeholder="Escreva sua mensagem..." />
+  <div>
+    <input id="message" placeholder="Digite sua mensagem..." />
     <button onclick="sendMessage()">Enviar</button>
   </div>
 
   <script>
     async function sendMessage() {
-      const input = document.getElementById("message");
-      const chatBox = document.getElementById("chat-box");
-      const message = input.value.trim();
+      const chat = document.getElementById("chat");
+      const messageInput = document.getElementById("message");
+      const provider = document.getElementById("provider").value;
+      const message = messageInput.value.trim();
+
       if (!message) return;
 
-      chatBox.innerHTML += `<div class='msg user'><b>Você:</b> ${message}</div>`;
-      input.value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
+      chat.innerHTML += `<p><b>Você:</b> ${message}</p>`;
+      messageInput.value = "";
 
-      try {
-        const response = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message })
-        });
+      chat.innerHTML += `<p><i>AuroraMind (${provider}) está pensando...</i></p>`;
 
-        if (!response.ok) throw new Error("Erro na resposta do servidor");
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, provider }),
+      });
 
-        const data = await response.json();
-        const reply = data.answer || "Desculpa, não consegui responder agora 😅";
-
-        chatBox.innerHTML += `<div class='msg bot'><b>AuroraMind:</b> ${reply}</div>`;
-      } catch (err) {
-        console.error("Erro:", err);
-        chatBox.innerHTML += `<div class='msg bot'><b>AuroraMind:</b> Erro ao conectar 😢</div>`;
-      }
-
-      chatBox.scrollTop = chatBox.scrollHeight;
+      const data = await res.json();
+      chat.innerHTML += `<p><b>${provider}:</b> ${data.answer || "Erro ao responder 😢"}</p>`;
+      chat.scrollTop = chat.scrollHeight;
     }
   </script>
 </body>
