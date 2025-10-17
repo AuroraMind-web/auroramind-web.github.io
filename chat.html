@@ -49,11 +49,17 @@
 </head>
 <body>
   <h1>💬 AuroraMind</h1>
+
+  <!-- Menu para escolher o provedor -->
   <select id="provider">
     <option value="openai">ChatGPT (OpenAI)</option>
     <option value="gemini">Gemini (Google)</option>
     <option value="claude">Claude (Anthropic)</option>
     <option value="deepseek">DeepSeek</option>
+    <option value="suno">Suno</option>
+    <option value="grok">Grok</option>
+    <option value="copilot">Copilot</option>
+    <option value="studioai">Studio AI</option>
   </select>
 
   <div id="chat"></div>
@@ -76,15 +82,23 @@
       messageInput.value = "";
 
       chat.innerHTML += `<p><i>AuroraMind (${provider}) está pensando...</i></p>`;
+      chat.scrollTop = chat.scrollHeight;
 
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, provider }),
-      });
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, provider }),
+        });
 
-      const data = await res.json();
-      chat.innerHTML += `<p><b>${provider}:</b> ${data.answer || "Erro ao responder 😢"}</p>`;
+        const data = await res.json();
+
+        chat.innerHTML += `<p><b>${provider}:</b> ${data.answer || "Erro ao responder 😢"}</p>`;
+      } catch (err) {
+        chat.innerHTML += `<p><b>${provider}:</b> Erro de conexão 😢</p>`;
+        console.error("Erro:", err);
+      }
+
       chat.scrollTop = chat.scrollHeight;
     }
   </script>
