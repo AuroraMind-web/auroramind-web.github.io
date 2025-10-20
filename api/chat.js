@@ -14,7 +14,6 @@ export default async function handler(req, res) {
     let apiKey = "";
     let bodyData = {};
 
-    // Seleciona o provedor conforme o menu
     switch (provider) {
       case "openai":
         apiUrl = "https://api.openai.com/v1/chat/completions";
@@ -70,11 +69,9 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: "Provedor inválido." });
     }
 
-    // Cabeçalhos
     const headers = { "Content-Type": "application/json" };
     if (apiKey) headers["Authorization"] = `Bearer ${apiKey}`;
 
-    // Requisição à API
     const response = await fetch(apiUrl, {
       method: "POST",
       headers,
@@ -83,10 +80,8 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    // Resposta padrão
     let answer = "Não consegui gerar resposta 😅";
 
-    // Cada IA tem formato diferente de resposta
     if (provider === "openai" || provider === "deepseek" || provider === "grok") {
       answer = data?.choices?.[0]?.message?.content || answer;
     } else if (provider === "claude") {
