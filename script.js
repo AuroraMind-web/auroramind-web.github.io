@@ -1,26 +1,16 @@
-const chat = document.getElementById("chat");
-const messageInput = document.getElementById("message");
-const providerSelect = document.getElementById("provider");
-const themeToggle = document.getElementById("themeToggle");
-
-function addMessage(sender, text, type) {
-  const msg = document.createElement("div");
-  msg.classList.add("message", type);
-  msg.textContent = `${sender}: ${text}`;
-  chat.appendChild(msg);
-  chat.scrollTop = chat.scrollHeight;
-  return msg;
-}
-
 async function sendMessage() {
+  const chat = document.getElementById("chat");
+  const messageInput = document.getElementById("message");
+  const provider = document.getElementById("provider").value;
   const message = messageInput.value.trim();
-  const provider = providerSelect.value;
 
   if (!message) return;
+
   addMessage("Você", message, "user");
   messageInput.value = "";
 
-  const typingMsg = addMessage("AuroraMind", "digitando...", "typing");
+  // Adiciona animação "digitando..."
+  const typingMsg = addTypingAnimation("AuroraMind está digitando");
 
   try {
     const res = await fetch("/api/chat", {
@@ -30,32 +20,45 @@ async function sendMessage() {
     });
 
     const data = await res.json();
-    typingMsg.remove();
+    chat.removeChild(typingMsg);
     addMessage(provider, data.answer || "Erro ao responder 😢", "bot");
   } catch (error) {
-    typingMsg.remove();
+    chat.removeChild(typingMsg);
     addMessage("AuroraMind", "Erro ao conectar 😢", "bot");
   }
+
+  chat.scrollTop = chat.scrollHeight;
 }
 
-document.getElementById("sendBtn").addEventListener("click", sendMessage);
-messageInput.addEventListener("keypress", (e) => {
+function addMessage(sender, text, type) {
+  const chat = document.getElementById("chat");
+  const msg = document.createElement("div");
+  msg.classList.add("message", type === "user" ? "user" : "bot");
+  msg.innerHTML = `<strong>${sender}:</strong> ${text}`;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+  return msg;
+}
+
+// Cria animação "digitando..."
+function addTypingAnimation(text) {
+  const chat = document.getElementById("chat");
+  const msg = document.createElement("div");
+  msg.classList.add("message", "bot", "typing");
+  msg.innerHTML = `<strong>${text}</strong><span class="dots"><span>.</span><span>.</span><span>.</span></span>`;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+  return msg;
+}
+
+// Envia com Enter
+document.getElementById("message").addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
 });
 
-// 🌙/🌞 alternância de tema
-themeToggle.addEventListener("click", () => {
+// Alternar tema claro/escuro
+document.getElementById("themeToggle").addEventListener("click", () => {
   document.body.classList.toggle("light");
-  const isLight = document.body.classList.contains("light");
-  themeToggle.textContent = isLight ? "🌞" : "🌙";
-  localStorage.setItem("theme", isLight ? "light" : "dark");
-});
-
-// Carrega o tema salvo
-window.addEventListener("load", () => {
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "light") {
-    document.body.classList.add("light");
-    themeToggle.textContent = "🌞";
-  }
+  const btn = document.getElementById("themeToggle");
+  btn.textContent = document.body.classList.contains("light") ? "🌞" : "🌙";
 });
