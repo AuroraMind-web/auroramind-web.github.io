@@ -1,79 +1,120 @@
-
-body {
-  font-family: Arial, sans-serif;
-  background: #0b0c10;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
+:root {
+  --bg-color: #0b0f19;
+  --text-color: #fff;
+  --bubble-user: #0078ff;
+  --bubble-bot: #1f2833;
+  --header-bg: #121826;
 }
 
-.chat-container {
-  width: 90%;
-  max-width: 500px;
-  background: #1f2833;
-  border-radius: 12px;
+.light {
+  --bg-color: #f6f8fa;
+  --text-color: #111;
+  --bubble-user: #0078ff;
+  --bubble-bot: #e3e7ee;
+  --header-bg: #fff;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--bg-color);
+  color: var(--text-color);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: var(--header-bg);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#provider, #themeToggle {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+#chat {
+  flex: 1;
   padding: 20px;
   overflow-y: auto;
-  height: 60vh;
-  margin-bottom: 10px;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .message {
-  margin: 10px 0;
-  padding: 10px 14px;
-  border-radius: 12px;
-  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 18px;
+  max-width: 70%;
+  animation: fadeIn 0.3s ease;
+  word-wrap: break-word;
 }
 
-.user {
-  background-color: #45a29e;
-  color: black;
+.message.user {
   align-self: flex-end;
+  background: var(--bubble-user);
+  color: #fff;
 }
 
-.bot {
-  background-color: #66fcf1;
-  color: black;
+.message.bot {
   align-self: flex-start;
+  background: var(--bubble-bot);
 }
 
-.typing {
+.message.typing {
   font-style: italic;
-  color: #999;
+  opacity: 0.7;
 }
 
-input, button, select {
-  border: none;
-  border-radius: 8px;
+footer {
   padding: 10px;
-  font-size: 1em;
+  background: var(--header-bg);
+  display: flex;
+  gap: 10px;
 }
 
 input {
-  width: 60%;
-  margin-right: 5px;
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
 }
 
 button {
-  background: #66fcf1;
-  color: #000;
-  font-weight: bold;
+  padding: 10px 16px;
+  background: #0078ff;
+  border: none;
+  border-radius: 10px;
+  color: white;
   cursor: pointer;
-  transition: background 0.3s;
+  font-weight: bold;
 }
 
 button:hover {
-  background: #45a29e;
+  background: #005fcc;
 }
 
-select {
-  margin-bottom: 10px;
-  width: 100%;
-  background: #1f2833;
-  color: white;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
