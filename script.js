@@ -1,11 +1,22 @@
+const chat = document.getElementById("chat");
+const messageInput = document.getElementById("message");
+const providerSelect = document.getElementById("provider");
+const themeToggle = document.getElementById("themeToggle");
+
+function addMessage(sender, text, type) {
+  const msg = document.createElement("div");
+  msg.classList.add("message", type);
+  msg.textContent = `${sender}: ${text}`;
+  chat.appendChild(msg);
+  chat.scrollTop = chat.scrollHeight;
+  return msg;
+}
+
 async function sendMessage() {
-  const chat = document.getElementById("chat");
-  const messageInput = document.getElementById("message");
-  const provider = document.getElementById("provider").value;
   const message = messageInput.value.trim();
+  const provider = providerSelect.value;
 
   if (!message) return;
-
   addMessage("Você", message, "user");
   messageInput.value = "";
 
@@ -19,28 +30,32 @@ async function sendMessage() {
     });
 
     const data = await res.json();
-    chat.removeChild(typingMsg);
+    typingMsg.remove();
     addMessage(provider, data.answer || "Erro ao responder 😢", "bot");
   } catch (error) {
-    chat.removeChild(typingMsg);
+    typingMsg.remove();
     addMessage("AuroraMind", "Erro ao conectar 😢", "bot");
   }
-
-  chat.scrollTop = chat.scrollHeight;
 }
 
-function addMessage(sender, text, type) {
-  const chat = document.getElementById("chat");
-  const msg = document.createElement("div");
-  msg.classList.add("message");
-  msg.classList.add(type === "user" ? "user" : "bot");
-  if (type === "typing") msg.classList.add("typing");
-  msg.textContent = `${sender}: ${text}`;
-  chat.appendChild(msg);
-  return msg;
-}
-
-// Permite enviar com Enter
-document.getElementById("message").addEventListener("keypress", (e) => {
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
+messageInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendMessage();
+});
+
+// 🌙/🌞 alternância de tema
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+  const isLight = document.body.classList.contains("light");
+  themeToggle.textContent = isLight ? "🌞" : "🌙";
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+});
+
+// Carrega o tema salvo
+window.addEventListener("load", () => {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "light") {
+    document.body.classList.add("light");
+    themeToggle.textContent = "🌞";
+  }
 });
