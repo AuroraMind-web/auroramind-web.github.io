@@ -157,4 +157,28 @@ button:hover {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
+}/* ===== Animação de digitação ===== */
+.typing .dots {
+  display: inline-block;
+  margin-left: 5px;
 }
+
+.typing .dots span {
+  display: inline-block;
+  font-weight: bold;
+  animation: blink 1.2s infinite;
+}
+
+.typing .dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing .dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0%, 20% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+  }
