@@ -36,3 +36,20 @@ function addMessage(sender, text, type) {
 
   return msgContainer;
 }
+// === Alternar entre modo claro e escuro ===
+const themeToggle = document.getElementById("themeToggle");
+
+// Carregar tema salvo
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "light") {
+  document.body.classList.add("light");
+  themeToggle.textContent = "🌞";
+}// Alternar tema
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+
+  const isLight = document.body.classList.contains("light");
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+
+  themeToggle.textContent = isLight ? "🌞" : "🌙";
+});
