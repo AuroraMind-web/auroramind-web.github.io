@@ -1,34 +1,16 @@
-<header class="header">
-  <div class="brand">
-    <img src="logo.jpeg" alt="AuroraMind Logo" class="logo" />
-    <h1>AuroraMind</h1>
-  </div>
-
-  <div class="controls">
-    <select id="provider">
-      <option value="openai">OpenAI</option>
-      <option value="claude">Claude</option>
-      <option value="gemini">Gemini</option>
-      <option value="deepseek">DeepSeek</option>
-      <option value="suno">Suno</option>
-      <option value="grok">Grok</option>
-    </select>
-
-    <!-- 🌞🌙 Botão de tema -->
-    <button id="themeToggle">🌙</button>
-  </div>
-</header><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AuroraMind – Chat IA</title>
+  <title>AuroraMind Chat</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- ===== Cabeçalho ===== -->
   <header class="header">
     <div class="brand">
-      <img src="./logo.jpeg" alt="AuroraMind Logo" class="logo" />
+      <img src="logo.jpeg" alt="AuroraMind Logo" class="logo" />
       <h1>AuroraMind</h1>
     </div>
 
@@ -41,12 +23,16 @@
         <option value="suno">Suno</option>
         <option value="grok">Grok</option>
       </select>
+
+      <!-- 🌞 / 🌙 alternância de tema -->
       <button id="themeToggle">🌙</button>
     </div>
   </header>
 
+  <!-- ===== Área do chat ===== -->
   <main id="chat"></main>
 
+  <!-- ===== Rodapé ===== -->
   <footer>
     <input id="message" placeholder="Digite sua mensagem..." />
     <button id="sendBtn">Enviar</button>
