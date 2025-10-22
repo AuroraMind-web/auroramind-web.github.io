@@ -1,11 +1,51 @@
+// === Enviar mensagem ===
+async function sendMessage() {
+  const chat = document.getElementById("chat");
+  const messageInput = document.getElementById("message");
+  const provider = document.getElementById("provider").value;
+  const message = messageInput.value.trim();
+
+  if (!message) return;
+
+  addMessage("Você", message, "user");
+  messageInput.value = "";
+
+  const typingMsg = addMessage("AuroraMind", "digitando...", "typing");
+
+  try {
+    // 🌐 URL da API (ajuste automático se necessário)
+    const apiUrl =
+      window.location.hostname.includes("vercel.app") ||
+      window.location.hostname.includes("localhost")
+        ? "/api/chat"
+        : "https://auroramind-web-github-io.vercel.app/api/chat";
+
+    const res = await fetch(apiUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, provider }),
+    });
+
+    const data = await res.json();
+
+    chat.removeChild(typingMsg);
+    addMessage("AuroraMind", data.answer || "Erro ao responder 😢", "bot");
+  } catch (error) {
+    console.error("Erro:", error);
+    chat.removeChild(typingMsg);
+    addMessage("AuroraMind", "Erro ao conectar 😢", "bot");
+  }
+
+  chat.scrollTop = chat.scrollHeight;
+}
+
+// === Adicionar mensagens no chat ===
 function addMessage(sender, text, type) {
   const chat = document.getElementById("chat");
 
-  // Cria o container da mensagem
   const msgContainer = document.createElement("div");
   msgContainer.classList.add("message", type === "user" ? "user" : "bot");
 
-  // Cria o avatar
   const avatar = document.createElement("img");
   avatar.classList.add("avatar");
   avatar.src =
@@ -14,14 +54,10 @@ function addMessage(sender, text, type) {
       : "logo.jpeg";
   avatar.alt = type === "user" ? "Usuário" : "AuroraMind";
 
-  // Cria a bolha de texto
   const msgBubble = document.createElement("div");
   msgBubble.classList.add("bubble");
-
-  // Adiciona o conteúdo
   msgBubble.innerHTML = `<strong>${sender}:</strong> ${text}`;
 
-  // Monta os elementos (ordem muda dependendo do tipo)
   if (type === "user") {
     msgContainer.appendChild(msgBubble);
     msgContainer.appendChild(avatar);
@@ -30,26 +66,28 @@ function addMessage(sender, text, type) {
     msgContainer.appendChild(msgBubble);
   }
 
-  // Adiciona ao chat
   chat.appendChild(msgContainer);
   chat.scrollTop = chat.scrollHeight;
 
   return msgContainer;
 }
-// === Alternar entre modo claro e escuro ===
-const themeToggle = document.getElementById("themeToggle");
 
-// Carregar tema salvo
+// === Enviar com Enter ===
+document.getElementById("message").addEventListener("keypress", (e) => {
+  if (e.key === "Enter") sendMessage();
+});
+
+// === Alternar tema claro/escuro ===
+const themeToggle = document.getElementById("themeToggle");
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "light") {
   document.body.classList.add("light");
   themeToggle.textContent = "🌞";
-}// Alternar tema
+}
+
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("light");
-
   const isLight = document.body.classList.contains("light");
   localStorage.setItem("theme", isLight ? "light" : "dark");
-
   themeToggle.textContent = isLight ? "🌞" : "🌙";
 });
